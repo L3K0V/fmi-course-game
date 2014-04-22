@@ -23,7 +23,10 @@ Level::Level(const string filename) {
 			buffer.push_front(line);
 		}
 
+		// Exclude /n character
 		width = buffer.back().size() -1;
+
+		// Exclude last (empty) line
 		height = buffer.size() -1;
 
 		data = new int*[height];
