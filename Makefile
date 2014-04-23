@@ -1,6 +1,6 @@
 CFLAGS=-c -Wall
 LDFLAGS=
-SOURCES=main.cc junk.cc consumable.cc alcohol.cc level.cc
+SOURCES=main.cc junk.cc usable.cc alcohol.cc armor.cc weapon.cc level.cc
 OBJECTS=$(SOURCES:.cc=.o)
 EXECUTABLE=TheGame
 

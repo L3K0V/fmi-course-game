@@ -5,6 +5,6 @@ int Alcohol::get_alcohol() const {
 }
 
 void Alcohol::print() const {
-	Consumable::print();
+	Usable::print();
 	std::cout << "\t alcohol[" << alcohol_ << "]" << std::endl;
 }

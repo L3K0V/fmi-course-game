@@ -5,6 +5,6 @@ int Junk::get_hp() const {
 }
 
 void Junk::print() const {
-	Consumable::print();
+	Usable::print();
 	std::cout << "\t hp[" << hp_ << "]" << std::endl;
 }
