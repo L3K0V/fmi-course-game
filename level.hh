@@ -8,16 +8,16 @@ using namespace std;
 
 class Level {
 private:
-	int **data;
+	int **data; //FIXME: CHAR
 	int width;
 	int height;
 public:
 	Level(const string);
 	~Level();
 	
-	const int get_width();
-	const int get_height();
-	const char get_cell(int, int);
+	int get_width() const { return width;}
+	int get_height() const { return height;}
+	char get_cell(int x, int y) const { return (char) data[y][x];}
 
 	void print_level();
 };

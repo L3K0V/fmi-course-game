@@ -1,10 +1,14 @@
 #include "armor.hh"
+#include "player.hh"
 
-int Armor::get_defense() const {
-	return defense_;
-}
+#include <iostream>
 
 void Armor::print() const {
 	Usable::print();
 	std::cout << "\t defense[" << defense_ << "]" << std::endl;
+}
+
+int Armor::use(Player &player) {
+	// TODO:
+	return 0;
 }

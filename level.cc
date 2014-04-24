@@ -73,13 +73,3 @@ void Level::print_level() {
 		std::cout << endl;
 	}
 }
-
-const int Level::get_width() {
-	return width;
-}
-const int Level::get_height() {
-	return height;
-}
-const char Level::get_cell(int x, int y) {
-	return (char) data[y][x];
-}

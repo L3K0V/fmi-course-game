@@ -10,9 +10,9 @@ public:
 	Junk(char type, string name, int hp) 
 	: Usable(type, name), hp_(hp) {}
 
-	int get_hp() const;
+	int get_hp() const {return hp_;}
 	virtual void print() const;
+	virtual int use(Player &player);
 };
-
 
 #endif

@@ -6,15 +6,20 @@
 class Weapon: public Usable {
 private:
 	int damage_;
-	float crit_;
+	int crit_;
 public:
-	Weapon(char type, string name, int damage, float crit)
+	/* 
+	 * Weapon types:
+	 *	'O' - One hand
+	 *  'T' - Two hand
+	 */
+	Weapon(char type, string name, int damage, int crit)
 	: Usable(type, name) , damage_(damage), crit_(crit){}
 
-	int get_damage() const;
-	float get_critical() const;
-	int get_critical_damage() const;
+	int get_damage() const {return damage_;}
+	int get_critical() const {return crit_;}
 	virtual void print() const;
+	virtual int use(Player &player);
 };
 
 #endif

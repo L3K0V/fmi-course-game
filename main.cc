@@ -3,6 +3,8 @@
 #include "alcohol.hh"
 #include "junk.hh"
 #include "weapon.hh"
+#include "player.hh"
+#include <iomanip>
 
 using namespace std;
 
@@ -11,22 +13,15 @@ int main() {
 	cout << "W: " << level1.get_width() << " H: " << level1.get_height() << endl;
 	level1.print_level();
 
-	Alcohol a('B', "Hainaken", 5);
-	Alcohol b('B', "Zagorga", 3);
+	Alcohol *weak = new Alcohol('c', "Summersby", 10);
 
-	a.print();
-	b.print();
+	Player sasho("Sashko");
+	sasho.use_intentory_item(sasho.add_to_inventory(weak));
+	sasho.use_intentory_item(sasho.add_to_inventory(new Alcohol('j', "Sokche", 11)));
 
-	Junk k('B', "Whooper", 10);
-	Junk l('B', "Grander Texas", 18);
-
-	k.print();
-	l.print();
-
-	Weapon r('M', "Razer Keyboard", 10, 1.5f);
-	r.print();
-
-	Weapon r2('O', "Razer Mouse", 8, 1.2f);
-	r2.print();
-return  0;
+	cout << setw(20) << left << "Alcohol" << " = " << sasho.get_alcohol() << endl;
+	cout << setw(20) << left << "Damage" <<  " = " << sasho.get_dmg() << endl;
+	cout << setw(20) << left << "Critical" << " = " << sasho.get_critical() << endl;
+	cout << setw(20) << left << "Miss chance" << " = " << sasho.get_miss_chance() << endl;
+	cout << setw(20) << left << "Dodge chance" << " = " << sasho.get_dodge_chance() << endl;
 }

@@ -2,9 +2,10 @@
 #define __USABLE_H__
 
 #include <string>
-#include <iostream>
 
-using namespace std;
+using std::string;
+
+class Player;
 
 class Usable {
 private:
@@ -13,10 +14,15 @@ private:
 public:
 	Usable(char type, string name) 
 	: type_(type), name_(name) {}
+	virtual ~Usable();
 
-	char get_type() const;
-	string get_name() const;
-	virtual void print() const;
+	char get_type() const {return type_;}
+	string get_name() const {return name_;}
+	virtual void print() const = 0;
+
+	/* Return 1 if is consumed,
+	 * Return 0 if is not consumed */
+	virtual int use(Player &player) = 0;
 };
 
 #endif

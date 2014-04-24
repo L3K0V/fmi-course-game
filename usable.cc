@@ -1,13 +1,9 @@
 #include "usable.hh"
 
-char Usable::get_type() const {
-	return type_;
-}
-
-string Usable::get_name() const {
-	return name_;
-}
+#include <iostream>
 
 void Usable::print() const {
-	cout << name_ << "[" << type_ << "]" << endl;
+	std::cout << name_ << "[" << type_ << "]" << std::endl;
 }
+
+Usable::~Usable() {}

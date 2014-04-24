@@ -10,8 +10,9 @@ public:
 	Alcohol(char type, string name, int alcohol)
 	: Usable(type, name) , alcohol_(alcohol){}
 
-	int get_alcohol() const;
+	int get_alcohol() const { return alcohol_;}
 	virtual void print() const;
+	virtual int use(Player &player);
 };
 
 #endif
