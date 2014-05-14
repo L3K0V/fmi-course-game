@@ -21,6 +21,6 @@ class Enemy {
         string get_name() const {return name_;}
 
         int change_hp(int change);
-}
+};
 
 #endif //__ENEMY_H__
