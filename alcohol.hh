@@ -7,7 +7,14 @@ class Alcohol : public Usable {
 private:
 	int alcohol_;
 public:
-	Alcohol(char type, string name, int alcohol)
+    /*
+     *  Types of alcohol:
+        'c' - Cyder
+        'b' - Beer
+        'v' - Vodka
+        'w' - Whyskey
+     */
+    Alcohol(char type, string name, int alcohol)
 	: Usable(type, name) , alcohol_(alcohol){}
 
 	int get_alcohol() const { return alcohol_;}

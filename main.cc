@@ -19,6 +19,11 @@ int main() {
 	sasho.use_intentory_item(sasho.add_to_inventory(weak));
 	sasho.use_intentory_item(sasho.add_to_inventory(new Alcohol('j', "Sokche", 11)));
 
+    sasho.use_intentory_item(sasho.add_to_inventory(new Weapon('O', "Razer Mouse", 10, 12)));
+    sasho.use_intentory_item(sasho.add_to_inventory(new Weapon('O', "Razer Mouse", 10, 12)));
+
+    sasho.use_intentory_item(sasho.add_to_inventory(new Weapon('T', "CM Fire Brown", 30, 50)));
+
 	cout << setw(20) << left << "Alcohol" << " = " << sasho.get_alcohol() << endl;
 	cout << setw(20) << left << "Damage" <<  " = " << sasho.get_dmg() << endl;
 	cout << setw(20) << left << "Critical" << " = " << sasho.get_critical() << endl;
