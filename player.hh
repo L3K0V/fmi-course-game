@@ -78,6 +78,9 @@ class Player {
         int get_alcohol() const { return alcohol_;}
         float get_miss_chance() const;
         float get_dodge_chance() const;
+
+        const Usable** get_inventory() const {return inventory_;}
+        const Usable** get_equipment() const {return equipment_;}
 };
 
 #endif //__PLAYER_H__

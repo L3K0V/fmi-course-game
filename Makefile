@@ -1,9 +1,9 @@
 CC=g++
-CFLAGS=-c -Wall
-LDFLAGS=
+CFLAGS=-c -Wall -lncurses
+LDFLAGS= -lncurses
 SOURCES=main.cc junk.cc usable.cc alcohol.cc armor.cc weapon.cc player.cc level.cc
 OBJECTS=$(SOURCES:.cc=.o)
-EXECUTABLE=TheGame
+EXECUTABLE=game
 
 all: $(SOURCES) $(EXECUTABLE)
 

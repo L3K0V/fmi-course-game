@@ -1,11 +1,13 @@
 #include <iostream>
+#include <iomanip>
+#include <ncurses.h>
+
 #include "level.hh"
 #include "alcohol.hh"
 #include "junk.hh"
 #include "weapon.hh"
 #include "player.hh"
 #include "armor.hh"
-#include <iomanip>
 
 using namespace std;
 
