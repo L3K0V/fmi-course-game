@@ -53,7 +53,15 @@ class Player {
 
         int equip_inventory_item(int entry);
         int equip_inventory_weapon(int entry);
+
+        /*
+         * Equip armor. Change if armor piece exist and it's weak compare to selected one.
+         * Return 1 if equipped.
+         * Return 0 if already equipped armor piece it's more strong
+         * Return -1 if failure.
+         */
         int equip_inventory_armor(int entry);
+        int equip_armor(int type, int entry);
     public:
         Player(string name);
         ~Player();
@@ -62,7 +70,7 @@ class Player {
         /* Return 1 if consumed (Usable like alcohol, junk food etc...)
          * Return 0 if not consumed (Weapons, Armor Equipment)
          * Return -1 if not exist */
-        int use_intentory_item(int entry);
+        int use_inventory_item(int entry);
         int get_hp() const { return hp_;}
         int get_dmg() const;
         int get_armor() const;

@@ -35,7 +35,7 @@ int Player::add_to_inventory(Usable *usable) {
     return i;
 }
 
-int Player::use_intentory_item(int entry) {
+int Player::use_inventory_item(int entry) {
     if (inventory_[entry]) {
         int result = inventory_[entry]->use(*this);
         /* So...usable  */
@@ -116,53 +116,39 @@ int Player::equip_inventory_weapon(int entry) {
     }
     return -1;
 }
-//TODO: Can be refactored!
-int Player::equip_inventory_armor(int entry) {
+
+int Player::equip_armor(int type, int entry) {
     Usable *usable = inventory_[entry];
     Usable *item = NULL;
 
-    switch(usable->get_type()) {
-        case 'H':
-            if (((Armor*) usable)->get_defense() > ((Armor*) equipment_[HELMET])->get_defense()) {
-                item = equipment_[HELMET];
-                equipment_[HELMET] = usable;
-                inventory_[entry] = NULL;
-                add_to_inventory(item);
-            }
-            return 1;
-        case 'C':
-            if (((Armor*) usable)->get_defense() > ((Armor*) equipment_[CHEST])->get_defense()) {
+    if (equipment_[type] != 0) {
+        if(((Armor*) usable)->get_defense() > ((Armor*) equipment_[type])->get_defense()) {
+            item = equipment_[type];
+            equipment_[type] = usable;
+            inventory_[entry] = NULL;
+            add_to_inventory(item);
+        } else {
+            return 0;
+        }
+    } else {
+        equipment_[type] = usable;
+        inventory_[entry] = NULL;
+    }
+    return 1;
+}
 
-                item = equipment_[CHEST];
-                equipment_[CHEST] = usable;
-                inventory_[entry] = NULL;
-                add_to_inventory(item);
-            }
-            return 1;
+int Player::equip_inventory_armor(int entry) {
+    switch(inventory_[entry]->get_type()) {
+        case 'H':
+            return equip_armor(HELMET, entry);
+        case 'C':
+            return equip_armor(CHEST, entry);
         case 'S':
-            if (((Armor*) usable)->get_defense() > ((Armor*) equipment_[SHOWDERS])->get_defense()) {
-                item = equipment_[SHOWDERS];
-                equipment_[SHOWDERS] = usable;
-                inventory_[entry] = NULL;
-                add_to_inventory(item);
-            }
-            return 1;
+            return equip_armor(SHOWDERS, entry);
         case 'L':
-            if (((Armor*) usable)->get_defense() > ((Armor*) equipment_[LEGS])->get_defense()) {
-                item = equipment_[LEGS];
-                equipment_[LEGS] = usable;
-                inventory_[entry] = NULL;
-                add_to_inventory(item);
-            }
-            return 1;
+            return equip_armor(LEGS, entry);
         case 'B':
-            if (((Armor*) usable)->get_defense() > ((Armor*) equipment_[BOOTS])->get_defense()) {
-                item = equipment_[BOOTS];
-                equipment_[BOOTS] = usable;
-                inventory_[entry] = NULL;
-                add_to_inventory(item);
-            }
-            return 1;
+            return equip_armor(BOOTS, entry);
         default: return -1;
     }
 }
@@ -183,7 +169,7 @@ int Player::get_armor() const {
     int armor = BASE_ARMOR;
     for(int i = 0; i < EQUIPMENT_SIZE; i++) {
         if ((equipment_[i] != 0) &&
-                (equipment_[i]->get_type() != 'O' || equipment_[i]->get_type() != 'T')) {
+                (equipment_[i]->get_type() != 'O' &&  equipment_[i]->get_type() != 'T')) {
             armor += ((Armor*) equipment_[i])->get_defense();
         }
     }
