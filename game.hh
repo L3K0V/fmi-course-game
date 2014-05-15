@@ -23,7 +23,7 @@ class Game {
             delete graphics;
         }
 
-        int load_level(string name);
+        int load_level(const string name);
         int attach_player(const Player *player);
 
         Level& get_level() const;
