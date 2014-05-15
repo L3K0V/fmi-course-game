@@ -13,6 +13,7 @@ void Graphics::run() {
         render_ui_borders(inventory_);
         render_ui_borders(status_);
         render_ui();
+        render_level();
     }
     cleanup();
 }
@@ -20,9 +21,10 @@ void Graphics::run() {
 // One-time initialization stuff
 void Graphics::init() {
     initscr();
-
     curs_set(false);
     getmaxyx(stdscr, screen_y, screen_x);
+
+    start_color();
 
     field_ = newwin(screen_y - STATUS_H, screen_x / 2, 0, 0);
     inventory_ = newwin(screen_y - STATUS_H, screen_x / 2, 0, screen_x / 2);
@@ -58,7 +60,7 @@ void Graphics::handle_resize() {
 }
 
 void Graphics::render_ui() {
-    mvwprintw(field_, 1, 1, "Board");
+    mvwprintw(field_, 1, 1, "");
     mvwprintw(status_, 1, 1, "Status");
     mvwprintw(inventory_, 1, 1, "Inventory");
 
@@ -92,12 +94,31 @@ void Graphics::render_ui_borders(WINDOW *window) {
 }
 
 void Graphics::render_level() {
+    int scr_w, scr_h;
+    float real_w, real_h;
+
     Level &level = game_.get_level();
+
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+
+    // Field window size
+    getmaxyx(field_, scr_h, scr_w);
+
+    // Ratio between window and actual level size
+    real_w = level.get_width() / float(scr_w);
+    real_h = level.get_height() / float(scr_h);
+
     int width, height;
-    for(height = 0; height < level.get_height(); height++) {
-        for(width = 0; width < level.get_width(); width++) {
-            addch(level.get_cell(width, height));
+
+    for(height = 1; height < scr_h-1; ++height) {
+        for(width = 1; width < scr_w-1; ++width) {
+            char cell = level.get_cell(float(width) * real_w,float(height)* real_h);
+            if (cell == '$') {
+                attron(COLOR_PAIR(1));
+            } else {
+                attroff(COLOR_PAIR(1));
+            }
+            mvwprintw(field_, height, width, &cell);
         }
-        addch('\n');
     }
 }
