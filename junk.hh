@@ -12,6 +12,7 @@ public:
 
 	int get_hp() const {return hp_;}
 	virtual void print() const;
+	virtual int get_attribute() const;
 	virtual int use(Player &player);
 };
 

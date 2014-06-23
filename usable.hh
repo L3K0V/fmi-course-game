@@ -18,6 +18,7 @@ public:
 
 	char get_type() const {return type_;}
 	string get_name() const {return name_;}
+	virtual int get_attribute() const = 0;
 	virtual void print() const = 0;
 
 	/* Return 1 if is consumed,

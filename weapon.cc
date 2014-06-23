@@ -9,6 +9,10 @@ void Weapon::print() const {
 	std::cout << "\t critical[" << crit_ << "]" << std::endl;
 }
 
+int Weapon::get_attribute() const {
+    return damage_;
+}
+
 int Weapon::use(Player &player) {
 	// TODO:
 	return 0;

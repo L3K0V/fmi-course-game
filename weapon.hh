@@ -18,6 +18,7 @@ public:
 
 	int get_damage() const {return damage_;}
 	int get_critical() const {return crit_;}
+	virtual int get_attribute() const;
 	virtual void print() const;
 	virtual int use(Player &player);
 };

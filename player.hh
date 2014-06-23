@@ -7,6 +7,8 @@ using std::string;
 
 class Usable;
 
+namespace game_player {
+
 const int EQUIPMENT_SIZE 	= 12;
 const int INVENTORY_SIZE 	= 20;
 
@@ -26,6 +28,10 @@ const int LEGS      = 3;
 const int BOOTS     = 4;
 const int MAIN      = 5;
 const int OFF       = 6;
+
+}
+
+using namespace game_player;
 
 /*
  *   | 0 |

@@ -1,4 +1,5 @@
 #include "level.hh"
+
 #include <fstream>
 #include <deque>
 #include <iostream>
@@ -29,13 +30,13 @@ Level::Level(const string filename) {
 		// Exclude last (empty) line
 		height = buffer.size() -1;
 
-		data = new int*[height];
+		data = new char*[height];
 
 		int line_num;
 		for(line_num = 0; line_num < height; line_num++) {
 			
 			string line_c = buffer.back();
-			data[line_num] = new int[width];
+			data[line_num] = new char[width];
 			std::cout << "loaded[" << line_c.size() << "]" << line_c << endl;
 
 			int cell;
@@ -61,6 +62,10 @@ Level::~Level() {
 		}
 		delete [] data;
 	}
+}
+
+Enemy& Level::generate_enemy(char type, int x, int y) const {
+    
 }
 
 void Level::print_level() {
