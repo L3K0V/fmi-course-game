@@ -9,7 +9,6 @@
 #include <iostream>
 
 using namespace std;
-using namespace game_utilities;
 
 /* Example map:
  *  TTTTTTTTTT
@@ -32,6 +31,8 @@ using namespace game_utilities;
  *      '@' - Player
  *      '#' - Solid
  */
+class Player; 
+
 class Level {
 private:
 	char **data;
@@ -39,18 +40,22 @@ private:
 	int height;
 	
 	vector<Enemy> enemies_;
-	
-	Enemy& generate_enemy(char type, int x, int y) const;
+
+	Enemy& generate_enemy(char type, int x, int y);
 public:
 	Level(const string);
 	~Level();
 
 	int get_width() const { return width;}
 	int get_height() const { return height;}
-	char get_cell(int x, int y) const {
+	char get_cell(int x, int y) {
         return data[y][x];
     }
+    void set_cell(int x, int y, char c) {
+        data[y][x] = c;
+    }
 	void print_level();
+	void set_player_position(Player* player);
 };
 
 #endif //LEVEL_H

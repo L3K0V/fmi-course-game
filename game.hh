@@ -12,7 +12,6 @@ class Game {
     private:
         Level *level_;
         Player *player_;
-        vector<Enemy> enemies_;
         Graphics *graphics;
     public:
         Game() {
@@ -24,11 +23,10 @@ class Game {
         }
 
         int load_level(const string name);
-        int attach_player(const Player *player);
+        int attach_player(Player *player);
 
         Level& get_level() const;
         Player& get_player() const;
-        vector<Enemy> get_enemies() const;
 
         void run();
         void update();

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <ctime>
 
+namespace game_utilities {
+
 int random(int min, int max) {
    static bool first = true;
    if ( first )  {  
@@ -10,4 +12,5 @@ int random(int min, int max) {
       first = false;
    }
    return min + rand() % (max - min);
+}
 }

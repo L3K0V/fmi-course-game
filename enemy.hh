@@ -5,17 +5,6 @@
 
 using std::string;
 
-const static int BASE_HP = 100;
-const static int TOLERANCE_HP = 25;
-
-const static int BASE_ARMOR = 20;
-const static int TOLERANCE_ARMOR = 10;
-
-const static int BASE_DMG = 10;
-const static int TOLERANCE_DMG = 5;
-
-const static float BOSS_MULTIPL = 1.3f;
-
 class Enemy {
     private:
         char type_;
@@ -26,6 +15,17 @@ class Enemy {
         
         int x_,y_;
     public:
+        const static int BASE_HP = 100;
+        const static int TOLERANCE_HP = 25;
+
+        const static int BASE_ARMOR = 20;
+        const static int TOLERANCE_ARMOR = 10;
+
+        const static int BASE_DMG = 10;
+        const static int TOLERANCE_DMG = 5;
+
+        const static float BOSS_MULTIPL;
+
         /*
          * Enemy types:
          *  'B' - Boss

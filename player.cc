@@ -4,6 +4,11 @@
 
 #include <cstring>
 
+const float Player::BASE_MISS		= 1.f;
+const float Player::BASE_DODGE		= 2.f;
+const float Player::ALC_PERCENTAGE	= 15.f / 100.f;
+const float Player::DOG_PERCENTAGE	= 20.f / 100.f;
+
 Player::Player(string name)
     : name_(name), hp_(100), alcohol_(1) {
         memset(&inventory_, 0, sizeof(Usable*) * INVENTORY_SIZE);

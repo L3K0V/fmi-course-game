@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -Wall -lncurses
+CFLAGS=-c -Wall -lncurses -std=c++11
 LDFLAGS=-lncurses
 SOURCES=main.cc utilities.cc junk.cc usable.cc alcohol.cc armor.cc weapon.cc player.cc level.cc game.cc graphics.cc enemy.cc
 OBJECTS=$(SOURCES:.cc=.o)
