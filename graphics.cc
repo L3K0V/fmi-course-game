@@ -10,111 +10,57 @@ void Graphics::start() {
 
 void Graphics::stop() {
 	// Some stuff before destroy graphics.
-	is_running = false;
 	cleanup();
 }
 
 void Graphics::render() {
-    handle_resize();
-    render_ui_borders(field_);
-    render_ui_borders(inventory_);
-    render_ui_borders(status_);
-    render_ui();
-    render_level();
-	update_panels();
+	SDL_UpdateWindowSurface( window_ );
 	
-	printw("Hello from panel maybe?!");
-	doupdate();
+	//Clear screen
+    SDL_RenderClear( renderer_ );
+
+    //Update screen
+	SDL_RenderPresent( renderer_ );
 }
 
 // One-time initialization stuff
-void Graphics::init() {
-    initscr();
-    curs_set(false);
-    getmaxyx(stdscr, screen_y, screen_x);
+int Graphics::init() {
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		std::cout << "Cannot initialize SDL, because of error = " << SDL_GetError() << std::endl;
+		return -1;
+	} else {
+		window_ = SDL_CreateWindow( "fmi-course-game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		
+		if(window_ == NULL) {
+			std::cout << "Cannot create SDL Window, because of error = " << SDL_GetError() << std::endl;
+			return -1;
+		} else {
+            renderer_ = SDL_CreateRenderer( window_, -1, SDL_RENDERER_ACCELERATED );
+            if( renderer_ == NULL ) {
+				std::cout << "Cannot create SDL Render, because of error = " << SDL_GetError() << std::endl;
+                return -1;
+            } else {
+                SDL_SetRenderDrawColor( renderer_, 0xFF, 0xFF, 0xFF, 0xFF );
 
-    start_color();
-
-    field_ = newwin(screen_y - STATUS_H, screen_x / 2, 0, 0);
-    inventory_ = newwin(screen_y - STATUS_H, screen_x / 2, 0, screen_x / 2);
-    status_ = newwin(STATUS_H, screen_x, screen_y - STATUS_H, 0);
-	debug_ = new_panel(inventory_);
-	
-	is_running = true;
+            }
+			
+			surface_ = SDL_GetWindowSurface(window_);
+		}
+	}
+	return 1;
 }
 
 void Graphics::cleanup() {
-    delwin(field_);
-    delwin(status_);
-    delwin(inventory_);
-    endwin();
+	SDL_DestroyRenderer( renderer_ );
+    SDL_DestroyWindow( window_ );
+	
+	window_ = NULL;
+	renderer_ = NULL;
+	
+    SDL_Quit();
 }
 
-void Graphics::exit_ncurses_for_a_while() {
-	def_prog_mode();
-	endwin();
-}
-void Graphics::return_to_ncurses() {
-	reset_prog_mode();
-	refresh();
-}
-
-void Graphics::handle_resize() {
-    int new_x, new_y;
-    getmaxyx(stdscr, new_y, new_x);
-
-    if (new_y != screen_y || new_x != screen_x) {
-        screen_y = new_y;
-        screen_x = new_x;
-
-        wresize(field_, new_y - STATUS_H, new_x / 2);
-        wresize(inventory_, new_y - STATUS_H, new_x / 2);
-        wresize(status_, STATUS_H, new_x);
-        mvwin(status_, new_y - STATUS_H, 0);
-        mvwin(inventory_, 0, new_x / 2);
-
-        wclear(stdscr);
-        wclear(field_);
-        wclear(inventory_);
-        wclear(status_);
-    }
-}
-
-void Graphics::render_ui() {
-    mvwprintw(field_, 1, 1, "");
-    mvwprintw(status_, 1, 1, "Status");
-    mvwprintw(inventory_, 1, 1, "Inventory");
-
-    wrefresh(field_);
-    wrefresh(inventory_);
-    wrefresh(status_);
-}
-
-void Graphics::render_ui_borders(WINDOW *window) {
-    int elm, x, y;
-
-    getmaxyx(window, y, x);
-
-    // 4 Corners
-    mvwprintw(window, 0, 0, "+");
-    mvwprintw(window, y - 1, 0, "+");
-    mvwprintw(window, 0, x - 1, "+");
-    mvwprintw(window, y - 1, x - 1, "+");
-
-    // sides
-    for (elm = 1; elm < (y - 1); elm++) {
-        mvwprintw(window, elm, 0, "|");
-        mvwprintw(window, elm, x - 1, "|");
-    }
-
-    // top and bottom
-    for (elm = 1; elm < (x - 1); elm++) {
-        mvwprintw(window, 0, elm, "-");
-        mvwprintw(window, y - 1, elm, "-");
-    }
-}
-
-void Graphics::render_level() {
+/* void Graphics::render_level() {
     int scr_w, scr_h;
     float real_w, real_h;
 
@@ -143,3 +89,4 @@ void Graphics::render_level() {
         }
     }
 }
+*/

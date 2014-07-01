@@ -14,7 +14,9 @@ class Game {
         Player *player_;
         Graphics *graphics;
 		
-		bool is_running = false;
+		bool flag_quit = false;
+		
+		SDL_Event event_;
     public:
         Game() {
            graphics = new Graphics(*this);
