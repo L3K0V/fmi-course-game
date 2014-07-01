@@ -1,5 +1,5 @@
 #ifndef __ALCOHOL_H__
-#define __ALHOCOL_H__
+#define __ALCOHOL_H__
 
 #include "usable.hh"
 

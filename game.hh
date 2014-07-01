@@ -13,12 +13,15 @@ class Game {
         Level *level_;
         Player *player_;
         Graphics *graphics;
+		
+		bool is_running = false;
     public:
         Game() {
            graphics = new Graphics(*this);
         }
 
         ~Game() {
+			graphics->stop();
             delete graphics;
         }
 
@@ -30,6 +33,7 @@ class Game {
 
         void run();
         void update();
+		void handle_input();
         void render();
         void exit();
 };

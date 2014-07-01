@@ -9,6 +9,5 @@ void Armor::print() const {
 }
 
 int Armor::use(Player &player) {
-	// TODO:
 	return 0;
 }

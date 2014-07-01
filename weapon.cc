@@ -14,6 +14,5 @@ int Weapon::get_attribute() const {
 }
 
 int Weapon::use(Player &player) {
-	// TODO:
 	return 0;
 }

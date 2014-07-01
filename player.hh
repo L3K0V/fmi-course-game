@@ -1,4 +1,4 @@
-#ifndef __PlAYER_H__
+#ifndef __PLAYER_H__
 #define __PLAYER_H__
 
 #include <string>

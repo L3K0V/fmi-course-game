@@ -4,18 +4,27 @@
 #include "level.hh"
 #include "game.hh"
 
-void Graphics::run() {
-
+void Graphics::start() {
     init();
-    while(1) {
-        handle_resize();
-        render_ui_borders(field_);
-        render_ui_borders(inventory_);
-        render_ui_borders(status_);
-        render_ui();
-        render_level();
-    }
-    cleanup();
+}
+
+void Graphics::stop() {
+	// Some stuff before destroy graphics.
+	is_running = false;
+	cleanup();
+}
+
+void Graphics::render() {
+    handle_resize();
+    render_ui_borders(field_);
+    render_ui_borders(inventory_);
+    render_ui_borders(status_);
+    render_ui();
+    render_level();
+	update_panels();
+	
+	printw("Hello from panel maybe?!");
+	doupdate();
 }
 
 // One-time initialization stuff
@@ -29,6 +38,9 @@ void Graphics::init() {
     field_ = newwin(screen_y - STATUS_H, screen_x / 2, 0, 0);
     inventory_ = newwin(screen_y - STATUS_H, screen_x / 2, 0, screen_x / 2);
     status_ = newwin(STATUS_H, screen_x, screen_y - STATUS_H, 0);
+	debug_ = new_panel(inventory_);
+	
+	is_running = true;
 }
 
 void Graphics::cleanup() {
@@ -36,6 +48,15 @@ void Graphics::cleanup() {
     delwin(status_);
     delwin(inventory_);
     endwin();
+}
+
+void Graphics::exit_ncurses_for_a_while() {
+	def_prog_mode();
+	endwin();
+}
+void Graphics::return_to_ncurses() {
+	reset_prog_mode();
+	refresh();
 }
 
 void Graphics::handle_resize() {
