@@ -8,6 +8,10 @@
 #include "enemy.hh"
 #include "graphics.hh"
 
+enum Position {
+	Left, Right, Up, Down
+};
+
 class Game {
     private:
         Level *level_;
@@ -17,6 +21,8 @@ class Game {
 		bool flag_quit = false;
 		
 		SDL_Event event_;
+		
+		int move(Position pos);
     public:
         Game() {
            graphics = new Graphics(*this);

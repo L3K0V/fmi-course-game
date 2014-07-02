@@ -24,6 +24,8 @@ void Graphics::render() {
 	if(inventory_active)
 		render_inventory();
 	
+	render_text("Hello World", {0,255,255,255});
+	
     //Update screen
 	SDL_RenderPresent( renderer_ );
 }
@@ -72,24 +74,75 @@ void Graphics::render_field() {
 	
 	SDL_Rect cell = {pos_x, pos_y, size, size};
 	
+	// Clear
+	SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
+	SDL_RenderClear(renderer_ );
+	
 	for (y = 0; y < height; y++) {
 		for (x = 0; x < width; x++) {
 			char ch = level.get_cell(x, y);
 			
 			switch(ch) {
 				case ' ':
-				SDL_SetRenderDrawColor(renderer_, 0, 255, 0, 255);
+					SDL_SetRenderDrawColor(renderer_, 20, 160, 45, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
 				break;
+				// PATH
+				case '-':
+					SDL_SetRenderDrawColor(renderer_, 30, 100, 180, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
+				break;
+				// SOLID
 				case '#': case 'T': case 'W':
-				SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 255);
+					SDL_SetRenderDrawColor(renderer_, 84, 84, 84, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
 				break;
+				case '$': {
+					SDL_SetRenderDrawColor(renderer_, 20, 160, 45, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
+					SDL_SetRenderDrawColor(renderer_, 170, 20, 5, 255);
+				
+					SDL_Rect enemy = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
+					SDL_RenderDrawRect(renderer_, &enemy);
+				} break;
+				case 'B': {
+					SDL_SetRenderDrawColor(renderer_, 170, 20, 5, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
+					SDL_SetRenderDrawColor(renderer_, 170, 20, 5, 255);
+				
+					SDL_Rect enemy = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
+					SDL_RenderDrawRect(renderer_, &enemy);
+				} break;
+				case '@': {
+					SDL_SetRenderDrawColor(renderer_, 30, 100, 180, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
+					SDL_SetRenderDrawColor(renderer_, 30, 100, 180, 255);
+			
+					SDL_Rect player = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
+					SDL_RenderDrawRect(renderer_, &player);
+				} break;
+				case 'C': {
+					SDL_SetRenderDrawColor(renderer_, 160, 65, 160, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
+					SDL_SetRenderDrawColor(renderer_, 160, 65, 160, 255);
+			
+					SDL_Rect player = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
+					SDL_RenderDrawRect(renderer_, &player);
+				} break;
+				case 'S': case 'D': {
+					SDL_SetRenderDrawColor(renderer_, 240, 210, 10, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
+					SDL_SetRenderDrawColor(renderer_, 240, 210, 10, 255);
+			
+					SDL_Rect player = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
+					SDL_RenderDrawRect(renderer_, &player);
+				} break;
 				default: 
-				SDL_SetRenderDrawColor(renderer_, 0, 255, 0, 255);
+					SDL_SetRenderDrawColor(renderer_, 0, 255, 0, 255);
+					SDL_RenderDrawRect(renderer_, &cell);
 				break;
 			}
-			
-			SDL_RenderDrawRect(renderer_, &cell);
-			
+
 			cell.x += size;
 		}
 		cell.y += size;
@@ -109,6 +162,22 @@ void Graphics::render_popup() {
 	
 }
 
+void Graphics::render_text(const std::string& text, SDL_Color color) {
+	SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(),  color);
+	
+	if(surface == NULL) {
+		std::cout << SDL_GetError() << std::endl;
+	}
+	
+	SDL_Texture *font = SDL_CreateTextureFromSurface(renderer_, surface);
+	
+	SDL_Rect rect = {0,0,100,20};
+	
+	SDL_RenderCopy(renderer_, font, NULL, &rect);
+	SDL_DestroyTexture(font);
+	SDL_FreeSurface(surface);
+}
+
 // One-time initialization stuff
 int Graphics::init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -117,7 +186,13 @@ int Graphics::init() {
 	} else {
 		
 		if (TTF_Init() == -1) {
+			return -1;
+		} else {
+			font = TTF_OpenFont("Helvetica.ttf", 20);
 			
+			if(font == NULL) {
+				std::cerr << SDL_GetError() << std::endl;
+			}
 		}
 		
 		window_ = SDL_CreateWindow( "fmi-course-game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
@@ -149,5 +224,6 @@ void Graphics::cleanup() {
 	window_ = NULL;
 	renderer_ = NULL;
 	
+	TTF_Quit();
     SDL_Quit();
 }

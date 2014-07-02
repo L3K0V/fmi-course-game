@@ -56,14 +56,14 @@ Level::Level(const string filename) {
 		}
     
         // Clear enemies from loaded map, Game will draw them
-        for (line_num = 0; line_num < height; line_num++) {
-            int cell;
-            for(cell = 0; cell < width; cell++) {
-                if(get_cell(cell, line_num) == '$') {
-                    set_cell(cell, line_num, ' ');
-                }
-            }
-        }
+        //for (line_num = 0; line_num < height; line_num++) {
+            //int cell;
+            //for(cell = 0; cell < width; cell++) {
+                //if(get_cell(cell, line_num) == '$') {
+                    //set_cell(cell, line_num, ' ');
+                //}
+            //}
+        //}
 
 		ifs.close();
 	} else {
@@ -106,18 +106,24 @@ Enemy& Level::generate_enemy(char type, int x, int y) {
 
 void Level::set_player_position(Player* player) {
     int x, y;
+	
+	
     
     for(y = 0; y < height; y++) {
         for(x = 0; x < width; x++) {
             if (get_cell(x,y) == '@') {
                 player->set_x(x);
                 player->set_y(y);
-                
-                set_cell(x, y, ' ');
             }
         }
     }
     std::cerr << "Player loaded on = {" << player->get_x() << "," << player->get_y() << "}" << std::endl;
+}
+
+void Level::change_player_position(Player *player, int last_x, int last_y) {
+	set_cell(last_x, last_y, '-');
+	set_cell(player->get_x(), player->get_y(), '@');
+	
 }
 
 void Level::print_level() {

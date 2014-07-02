@@ -30,6 +30,45 @@ int Game::attach_player(Player *player) {
 	// TODO: now we can draw player!
 }
 
+int Game::move(Position pos) {
+	int last_x, last_y;
+	
+	last_x = player_->get_x();
+	last_y = player_->get_y();
+	
+	switch(pos) {
+		case Left:
+		if (last_x - 1 >= 0 && (level_->get_cell(last_x - 1, last_y) != '#' 
+			&& level_->get_cell(last_x - 1, last_y) != 'T' 
+			&& level_->get_cell(last_x - 1, last_y) != 'W'))
+				player_->set_x(player_->get_x() - 1);
+		break;
+		
+		case Right:
+		if (last_x + 1 < level_->get_width() && (level_->get_cell(last_x + 1, last_y) != '#' 
+			&& level_->get_cell(last_x + 1, last_y) != 'T' 
+			&& level_->get_cell(last_x + 1, last_y) != 'W'))
+				player_->set_x(player_->get_x() + 1);
+		break;
+		
+		case Up:
+		if (last_y - 1 >= 0 && (level_->get_cell(last_x, last_y - 1) != '#' 
+			&& level_->get_cell(last_x, last_y - 1) != 'T' 
+			&& level_->get_cell(last_x, last_y - 1) != 'W'))
+				player_->set_y(player_->get_y() - 1);
+		break;
+		
+		case Down:
+		if (last_y + 1 < level_->get_height() && (level_->get_cell(last_x, last_y + 1) != '#' 
+			&& level_->get_cell(last_x, last_y + 1) != 'T' 
+			&& level_->get_cell(last_x, last_y + 1) != 'W'))
+				player_->set_y(player_->get_y() + 1);
+		break;
+	}
+	
+	level_->change_player_position(player_, last_x, last_y);
+}
+
 void Game::handle_input() {
 	while(SDL_PollEvent(&event_) != 0) {
 		if(event_.type == SDL_QUIT) {
@@ -38,16 +77,16 @@ void Game::handle_input() {
 			switch(event_.key.keysym.sym) {
 				//Navigation
 				case SDLK_UP: case SDLK_w:
-				
+					move(Up);
 				break;
 				case SDLK_DOWN: case SDLK_s:
-				
+					move(Down);
 				break;
 				case SDLK_LEFT: case SDLK_a:
-				
+					move(Left);
 				break;
 				case SDLK_RIGHT: case SDLK_d:
-				
+					move(Right);
 				break;
 				// Inventory
 				case SDLK_i:
@@ -56,6 +95,10 @@ void Game::handle_input() {
 				//Equip/Use
 				case SDLK_u:
 				
+				break;
+				
+				case SDLK_q:
+					flag_quit = true;
 				break;
 				default:
 				

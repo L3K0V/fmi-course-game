@@ -1,11 +1,15 @@
 #ifndef __GRAPHICS_H__
 #define __GRAPHICS_H__
 
+#include <string>
+
 #include <SDL2/SDL.h>
 #include <SDL2_ttf/SDL_ttf.h>
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
+
+using std::string;
 
 class Game;
 
@@ -21,6 +25,8 @@ class Graphics {
 		
 		SDL_Renderer *renderer_ = NULL;
 		
+		TTF_Font *font = NULL;
+		
 		bool inventory_active = false;
 
         int init();
@@ -28,6 +34,7 @@ class Graphics {
 		void render_field();
 		void render_inventory();
 		void render_popup();
+		void render_text(const string&, SDL_Color);
     public:
         Graphics(Game &game)
         : game_(game){}

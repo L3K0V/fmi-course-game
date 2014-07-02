@@ -31,6 +31,18 @@ using namespace std;
  *      '@' - Player
  *      '#' - Solid
  */
+namespace game_level {
+	const static char TREE 		= 'T';
+	const static char WALL 		= 'W';
+	const static char DOOR 		= 'D';
+	const static char STAIRS 	= 'S';
+	const static char CHEST 	= 'C';
+	const static char KEY 		= 'K';
+	const static char MONSTER 	= 'M';
+	const static char BOSS 		= 'B';
+	const static char PLAYER 	= '@';
+	const static char SOLID		= '#';
+}
 class Player; 
 
 class Level {
@@ -56,6 +68,7 @@ public:
     }
 	void print_level();
 	void set_player_position(Player* player);
+	void change_player_position(Player *player, int last_x, int last_y);
 };
 
 #endif //LEVEL_H
