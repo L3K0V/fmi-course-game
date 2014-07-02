@@ -1,6 +1,6 @@
 CC=g++
-CFLAGS=-c -Wall -F /Library/Frameworks -framework SDL2 -std=c++11
-LDFLAGS=-F /Library/Frameworks -framework SDL2
+CFLAGS=-c -Wall -F /Library/Frameworks -framework SDL2 -framework SDL2_ttf -std=c++11
+LDFLAGS=-F /Library/Frameworks -framework SDL2 -framework SDL2_ttf
 SOURCES=main.cc utilities.cc junk.cc usable.cc alcohol.cc armor.cc weapon.cc player.cc level.cc game.cc graphics.cc enemy.cc
 OBJECTS=$(SOURCES:.cc=.o)
 EXECUTABLE=game

@@ -9,7 +9,7 @@ int main() {
     Player kamunn("Kamunn");
 
     Game game;
-    game.load_level("levels/1.level");
+    game.load_level("levels/3.level");
     game.attach_player(&kamunn);
     game.run();
 }

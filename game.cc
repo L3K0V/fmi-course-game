@@ -51,7 +51,7 @@ void Game::handle_input() {
 				break;
 				// Inventory
 				case SDLK_i:
-				
+				graphics->switch_inventory_state();
 				break;
 				//Equip/Use
 				case SDLK_u:
