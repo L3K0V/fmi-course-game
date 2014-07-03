@@ -178,6 +178,35 @@ void Graphics::render_text(const std::string& text, SDL_Color color) {
 	SDL_FreeSurface(surface);
 }
 
+void Graphics::handle_popup(int m_x, int m_y) {
+	Level &level = game_.get_level();
+	
+	int width = level.get_width();
+	int height = level.get_height();
+	
+	int x, y, pos_x, pos_y;
+	
+	pos_x = SCREEN_WIDTH / 2 - SCREEN_WIDTH / 3;
+	pos_y = SCREEN_HEIGHT / 2 - SCREEN_HEIGHT / 3;
+	
+	int size = width > height ? ((SCREEN_WIDTH - 2 * pos_x) / width) : ((SCREEN_HEIGHT - 2 * pos_y) / height);
+	
+	SDL_Rect cell = {pos_x, pos_y, size, size};
+	
+	for (y = 0; y < height; y++) {
+		for (x = 0; x < width; x++) {
+			if ((m_x >= cell.x && m_x < cell.x + cell.w)
+				&& (m_y >= cell.y && m_y < cell.y + cell.h)) {
+					std::cout << "selected cell [" << x << ";" << y << "]" << std::endl;
+					return;
+				}
+				cell.x += size;
+		}
+		cell.y += size;
+		cell.x -= size * width;
+	}
+}
+
 // One-time initialization stuff
 int Graphics::init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {

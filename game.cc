@@ -26,8 +26,6 @@ int Game::load_level(const string name) {
 int Game::attach_player(Player *player) {
     level_->set_player_position(player);
     player_ = player;
-	
-	// TODO: now we can draw player!
 }
 
 int Game::move(Position pos) {
@@ -37,33 +35,45 @@ int Game::move(Position pos) {
 	last_y = player_->get_y();
 	
 	switch(pos) {
-		case Left:
-		if (last_x - 1 >= 0 && (level_->get_cell(last_x - 1, last_y) != '#' 
-			&& level_->get_cell(last_x - 1, last_y) != 'T' 
-			&& level_->get_cell(last_x - 1, last_y) != 'W'))
-				player_->set_x(player_->get_x() - 1);
-		break;
+		case Left: {
 		
-		case Right:
-		if (last_x + 1 < level_->get_width() && (level_->get_cell(last_x + 1, last_y) != '#' 
-			&& level_->get_cell(last_x + 1, last_y) != 'T' 
-			&& level_->get_cell(last_x + 1, last_y) != 'W'))
-				player_->set_x(player_->get_x() + 1);
-		break;
+		int left = last_x - 1;
 		
-		case Up:
-		if (last_y - 1 >= 0 && (level_->get_cell(last_x, last_y - 1) != '#' 
-			&& level_->get_cell(last_x, last_y - 1) != 'T' 
-			&& level_->get_cell(last_x, last_y - 1) != 'W'))
-				player_->set_y(player_->get_y() - 1);
-		break;
+		if (left >= 0 && (level_->get_cell(left, last_y) != game_level::SOLID 
+			&& level_->get_cell(left, last_y) != game_level::TREE 
+			&& level_->get_cell(left, last_y) != game_level::WALL))
+				player_->set_x(left);
+		} break;
 		
-		case Down:
-		if (last_y + 1 < level_->get_height() && (level_->get_cell(last_x, last_y + 1) != '#' 
-			&& level_->get_cell(last_x, last_y + 1) != 'T' 
-			&& level_->get_cell(last_x, last_y + 1) != 'W'))
-				player_->set_y(player_->get_y() + 1);
-		break;
+		case Right: {
+		
+		int right = last_x + 1;	
+			
+		if (right < level_->get_width() && (level_->get_cell(right, last_y) != game_level::SOLID 
+			&& level_->get_cell(right, last_y) != game_level::TREE 
+			&& level_->get_cell(right, last_y) != game_level::WALL))
+				player_->set_x(right);
+		} break;
+		
+		case Up: {
+		
+		int up = last_y - 1;
+		
+		if (up >= 0 && (level_->get_cell(last_x, up) != game_level::SOLID 
+			&& level_->get_cell(last_x, up) != game_level::TREE 
+			&& level_->get_cell(last_x, up) != game_level::WALL))
+				player_->set_y(up);
+		} break;
+		
+		case Down: {
+		
+		int down = last_y + 1;
+		
+		if (down < level_->get_height() && (level_->get_cell(last_x, down) != game_level::SOLID 
+			&& level_->get_cell(last_x, down) != game_level::TREE 
+			&& level_->get_cell(last_x, down) != game_level::WALL))
+				player_->set_y(down);
+		} break;
 	}
 	
 	level_->change_player_position(player_, last_x, last_y);
@@ -104,6 +114,11 @@ void Game::handle_input() {
 				
 				break;
 			}
+		} else if (event_.type == SDL_MOUSEMOTION) {
+		    int x, y;
+            
+            SDL_GetMouseState(&x, &y);
+            graphics->handle_popup(x, y);
 		}
 	}
 }

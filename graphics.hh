@@ -46,6 +46,7 @@ class Graphics {
 		
 		void switch_inventory_state() { inventory_active = !inventory_active; }
 		bool is_inventory_active() { return inventory_active; }
+		void handle_popup(int x, int y);
 };
 
 #endif // __GRAPHICS_H__
