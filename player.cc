@@ -1,11 +1,12 @@
 #include "player.hh"
 #include "weapon.hh"
 #include "armor.hh"
+#include "utilities.hh"
 
 #include <cstring>
 
 const float Player::BASE_MISS		= 1.f;
-const float Player::BASE_DODGE		= 2.f;
+const float Player::BASE_DODGE		= 10.f;
 const float Player::ALC_PERCENTAGE	= 15.f / 100.f;
 const float Player::DOG_PERCENTAGE	= 20.f / 100.f;
 
@@ -198,5 +199,18 @@ float Player::get_miss_chance() const {
 
 float Player::get_dodge_chance() const {
     // FIXME: thats why
-    return BASE_DODGE - (hp_ * DOG_PERCENTAGE) + (alcohol_ * ALC_PERCENTAGE);
+    return BASE_DODGE + (get_armor() * DOG_PERCENTAGE) + (alcohol_ * ALC_PERCENTAGE) + game_utilities::random(BASE_DODGE, BASE_DODGE + 0.25 * get_armor());
+}
+
+int Player::take_damage(int dmg) {
+	bool dodge = game_utilities::random(0, 100) <= get_dodge_chance();
+	if (!dodge) {
+		dmg -= (0.50 * get_armor());
+		dmg = dmg < 0 ? -dmg : dmg;
+		hp_ -= dmg;
+	}
+}
+
+int Player::deal_damage() {
+	return 1; //TODO:
 }
