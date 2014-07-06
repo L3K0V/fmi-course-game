@@ -69,22 +69,26 @@ int Game::move(Position pos) {
 	
 	switch(level_->get_cell(player_->get_x(), player_->get_y())) {
 		case game_level::EXIT:
-		level_ = &loader_->load_next_level();
-		level_->set_player_position(player_);
+			level_ = &loader_->load_next_level();
+			level_->set_player_position(player_);
 		break;
-		case game_level::MONSTER: case game_level::BOSS:
+		case game_level::MONSTER: case game_level::BOSS: {
 			fight();
-		default:
-		level_->change_player_position(player_, last_x, last_y);
+		} default:
+			level_->change_player_position(player_, last_x, last_y);
 		break;
 	}
 }
 
 int Game::fight() {
+	
+}
+
+Enemy& Game::get_enemy(int x, int y) {
 	for(int e = 0; e < level_->get_enemies().size(); e++) {
-		if(level_->get_enemies()[e].get_x() == player_->get_x() && 
-			level_->get_enemies()[e].get_y() == player_->get_y()) {
-			
+		if(level_->get_enemies()[e].get_x() == x && 
+			level_->get_enemies()[e].get_y() == y) {
+				return level_->get_enemies()[e];
 		}
 	}
 }

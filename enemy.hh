@@ -36,6 +36,7 @@ class Enemy {
         char get_type() const {return type_;}
         int get_hp() const {return hp_;}
         int get_armor() const {return armor_;}
+		int get_dmg() const { return dmg_;}
         string get_name() const {return name_;}
 
         int change_hp(int change);

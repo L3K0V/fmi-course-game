@@ -47,7 +47,7 @@ Level::Level(const string filename) {
 				data[line_num][cell] = line_c.c_str()[cell];
 				
 				char type = line_c.c_str()[cell];
-				if (type == '$') {
+				if (type == 'M' || type == 'B') {
 				    generate_enemy(type, line_num, cell);
 				}
 			}
@@ -89,9 +89,9 @@ Enemy& Level::generate_enemy(char type, int x, int y) {
     int armor   = random(Enemy::BASE_ARMOR, Enemy::BASE_ARMOR   + Enemy::TOLERANCE_ARMOR);
     int damage  = random(Enemy::BASE_DMG,   Enemy::BASE_DMG     + Enemy::TOLERANCE_DMG);
     
-    hp      *= type == '$' ? Enemy::BOSS_MULTIPL : 1.0f;
-    armor   *= type == '$' ? Enemy::BOSS_MULTIPL : 1.0f;
-    damage  *= type == '$' ? Enemy::BOSS_MULTIPL : 1.0f;
+    hp      *= type == 'B' ? Enemy::BOSS_MULTIPL : 1.0f;
+    armor   *= type == 'B' ? Enemy::BOSS_MULTIPL : 1.0f;
+    damage  *= type == 'B' ? Enemy::BOSS_MULTIPL : 1.0f;
     
     Enemy enemy(type, hp, armor, damage, "Enemy_" + std::to_string(enemy_count++));
     enemy.set_x(x);

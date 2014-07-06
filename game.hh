@@ -35,6 +35,9 @@ class Game {
         }
 		
 		Level& get_level() const {return loader_->get_current_level();}
+		Player& get_player() {return *player_;}
+		
+		Enemy& get_enemy(int,int);
 		
         int attach_player(Player *player);
 

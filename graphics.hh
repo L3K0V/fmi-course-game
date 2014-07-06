@@ -28,13 +28,17 @@ class Graphics {
 		TTF_Font *font = NULL;
 		
 		bool inventory_active = false;
+		bool popup_active = false;
+		
+		int m_popup_x, m_popup_y;
+		int s_popup_x, s_popup_y;
 
         int init();
         void cleanup();
 		void render_field();
 		void render_inventory();
 		void render_popup();
-		void render_text(const string&, SDL_Color);
+		void render_text(const string&, SDL_Color, int);
     public:
         Graphics(Game &game)
         : game_(game){}

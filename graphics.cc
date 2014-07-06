@@ -21,10 +21,11 @@ void Graphics::render() {
 	
 	render_field();
 	
+	if(popup_active) 
+		render_popup();
+	
 	if(inventory_active)
 		render_inventory();
-	
-	render_text("Hello World", {0,255,255,255});
 	
     //Update screen
 	SDL_RenderPresent( renderer_ );
@@ -159,10 +160,41 @@ void Graphics::render_field() {
 }
 
 void Graphics::render_popup() {
+	if(SDL_SetRenderTarget(renderer_, status_popup_) < 0) {
+		std::cerr << "Cannot change renderer texture, because of error = " << SDL_GetError() << std::endl;
+		return;
+	}
+
+	SDL_SetRenderDrawColor(renderer_, 128, 128, 128, 255);
+	SDL_RenderClear(renderer_);
+
+	SDL_Rect popup_border = {0, 0, 150, 100};
+	SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 255);
+	SDL_RenderDrawRect(renderer_, &popup_border);
+
+	if (game_.get_player().get_x() == s_popup_x && game_.get_player().get_y() == s_popup_y) {
+		render_text("Health points: " + std::to_string(game_.get_player().get_hp()), {0,0,0,255}, 18);
+		render_text("Armor points: " + std::to_string(game_.get_player().get_armor()), {0,0,0,255}, 36);
+		render_text("Damage points: " + std::to_string(game_.get_player().get_dmg()), {0,0,0,255}, 52);
+	} else {
+		Enemy enemy = game_.get_enemy(s_popup_x, s_popup_y);
 	
+		render_text("Name: " + enemy.get_name(), {0,0,0,255}, 0);
+		render_text("Health points: " + std::to_string(enemy.get_hp()), {0,0,0,255}, 18);
+		render_text("Armor points: " + std::to_string(enemy.get_armor()), {0,0,0,255}, 36);
+		render_text("Damage points: " + std::to_string(enemy.get_dmg()), {0,0,0,255}, 52);
+	}
+	
+	if(SDL_SetRenderTarget(renderer_, NULL) < 0) {
+		std::cerr << "Cannot change renderer texture, because of error = " << SDL_GetError() << std::endl;
+		return;
+	}
+
+	SDL_Rect bounds = {m_popup_x + 10, m_popup_y + 10, 150, 100};
+	SDL_RenderCopy(renderer_, status_popup_, NULL, &bounds);
 }
 
-void Graphics::render_text(const std::string& text, SDL_Color color) {
+void Graphics::render_text(const std::string& text, SDL_Color color, int offsetY) {
 	SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(),  color);
 	
 	if(surface == NULL) {
@@ -171,7 +203,7 @@ void Graphics::render_text(const std::string& text, SDL_Color color) {
 	
 	SDL_Texture *font = SDL_CreateTextureFromSurface(renderer_, surface);
 	
-	SDL_Rect rect = {0,0,100,20};
+	SDL_Rect rect = {0,offsetY, 120,18};
 	
 	SDL_RenderCopy(renderer_, font, NULL, &rect);
 	SDL_DestroyTexture(font);
@@ -197,7 +229,18 @@ void Graphics::handle_popup(int m_x, int m_y) {
 		for (x = 0; x < width; x++) {
 			if ((m_x >= cell.x && m_x < cell.x + cell.w)
 				&& (m_y >= cell.y && m_y < cell.y + cell.h)) {
-					std::cout << "selected cell [" << x << ";" << y << "]" << std::endl;
+					// DEBUG std::cout << "selected cell [" << x << ";" << y << "]" << std::endl;
+					
+					if(level.get_cell(x, y) == game_level::MONSTER || level.get_cell(x, y) == game_level::BOSS || level.get_cell(x,y) == game_level::PLAYER) {
+						popup_active = true;
+						m_popup_x = m_x;
+						m_popup_y = m_y;
+						
+						s_popup_x = x;
+						s_popup_y = y;
+					} else 
+						popup_active = false;
+					
 					return;
 				}
 				cell.x += size;
@@ -205,6 +248,8 @@ void Graphics::handle_popup(int m_x, int m_y) {
 		cell.y += size;
 		cell.x -= size * width;
 	}
+	
+	popup_active = false;
 }
 
 // One-time initialization stuff
@@ -217,7 +262,7 @@ int Graphics::init() {
 		if (TTF_Init() == -1) {
 			return -1;
 		} else {
-			font = TTF_OpenFont("Helvetica.ttf", 20);
+			font = TTF_OpenFont("Helvetica.ttf", 16);
 			
 			if(font == NULL) {
 				std::cerr << SDL_GetError() << std::endl;
@@ -237,7 +282,7 @@ int Graphics::init() {
             }
 			inventory_ = SDL_CreateTexture( renderer_, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH / 3, SCREEN_HEIGHT - 10);
 			field_ = SDL_CreateTexture( renderer_, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH, SCREEN_HEIGHT);
-			status_popup_ = SDL_CreateTexture( renderer_, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 70, 100);
+			status_popup_ = SDL_CreateTexture( renderer_, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 150, 100);
 		}
 	}
 	return 1;

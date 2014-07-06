@@ -18,6 +18,7 @@ class Armor: public Usable {
             : Usable(type, name) , defense_(defense){}
 
         int get_defense() const {return defense_;}
+		int get_attribute() const {return defense_; }
         virtual void print() const;
         virtual int use(Player &player);
 };
