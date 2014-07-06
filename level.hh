@@ -32,6 +32,7 @@ using namespace std;
  *      '#' - Solid
  */
 namespace game_level {
+	const static char EXIT 		= 'E';
 	const static char TREE 		= 'T';
 	const static char WALL 		= 'W';
 	const static char DOOR 		= 'D';
@@ -67,6 +68,7 @@ public:
         data[y][x] = c;
     }
 	void print_level();
+	vector<Enemy> get_enemies() { return enemies_; }
 	void set_player_position(Player* player);
 	void change_player_position(Player *player, int last_x, int last_y);
 };

@@ -1,12 +1,10 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
-#include <vector>
-
 #include "player.hh"
-#include "level.hh"
 #include "enemy.hh"
 #include "graphics.hh"
+#include "level_loader.hh"
 
 enum Position {
 	Left, Right, Up, Down
@@ -14,32 +12,34 @@ enum Position {
 
 class Game {
     private:
-        Level *level_;
-        Player *player_;
-        Graphics *graphics;
+        Level 		*level_;
+        Player 		*player_;
+        Graphics 	*graphics;
+		LevelLoader *loader_;
 		
 		bool flag_quit = false;
 		
 		SDL_Event event_;
 		
 		int move(Position pos);
+		int fight();
     public:
-        Game() {
-           graphics = new Graphics(*this);
-        }
+        Game()
+		:loader_(new LevelLoader()), graphics(new Graphics(*this))
+		{}
 
         ~Game() {
 			graphics->stop();
             delete graphics;
+			delete loader_;
         }
-
-        int load_level(const string name);
+		
+		Level& get_level() const {return loader_->get_current_level();}
+		
         int attach_player(Player *player);
 
-        Level& get_level() const;
-        Player& get_player() const;
-
         void run();
+		void load();
         void update();
 		void handle_input();
         void render();

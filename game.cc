@@ -9,18 +9,9 @@ void Game::run() {
     graphics->stop();
 }
 
-Level& Game::get_level() const {
-    return *level_;
-}
-
-int Game::load_level(const string name) {
-	if (level_ != NULL) {
-		delete level_;
-		level_ = NULL;
-	}
-    level_ = new Level(name);
-	// TODO: map meta data!
-    return 0;
+void Game::load() {
+	loader_->load_level_entries();
+	level_ = &loader_->load_next_level();
 }
 
 int Game::attach_player(Player *player) {
@@ -76,7 +67,26 @@ int Game::move(Position pos) {
 		} break;
 	}
 	
-	level_->change_player_position(player_, last_x, last_y);
+	switch(level_->get_cell(player_->get_x(), player_->get_y())) {
+		case game_level::EXIT:
+		level_ = &loader_->load_next_level();
+		level_->set_player_position(player_);
+		break;
+		case game_level::MONSTER: case game_level::BOSS:
+			fight();
+		default:
+		level_->change_player_position(player_, last_x, last_y);
+		break;
+	}
+}
+
+int Game::fight() {
+	for(int e = 0; e < level_->get_enemies().size(); e++) {
+		if(level_->get_enemies()[e].get_x() == player_->get_x() && 
+			level_->get_enemies()[e].get_y() == player_->get_y()) {
+			
+		}
+	}
 }
 
 void Game::handle_input() {

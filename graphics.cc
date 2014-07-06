@@ -93,11 +93,11 @@ void Graphics::render_field() {
 					SDL_RenderDrawRect(renderer_, &cell);
 				break;
 				// SOLID
-				case '#': case 'T': case 'W':
+				case game_level::SOLID: case game_level::TREE: case game_level::WALL:
 					SDL_SetRenderDrawColor(renderer_, 84, 84, 84, 255);
 					SDL_RenderDrawRect(renderer_, &cell);
 				break;
-				case '$': {
+				case game_level::MONSTER: {
 					SDL_SetRenderDrawColor(renderer_, 20, 160, 45, 255);
 					SDL_RenderDrawRect(renderer_, &cell);
 					SDL_SetRenderDrawColor(renderer_, 170, 20, 5, 255);
@@ -105,7 +105,7 @@ void Graphics::render_field() {
 					SDL_Rect enemy = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
 					SDL_RenderDrawRect(renderer_, &enemy);
 				} break;
-				case 'B': {
+				case game_level::BOSS: {
 					SDL_SetRenderDrawColor(renderer_, 170, 20, 5, 255);
 					SDL_RenderDrawRect(renderer_, &cell);
 					SDL_SetRenderDrawColor(renderer_, 170, 20, 5, 255);
@@ -113,7 +113,7 @@ void Graphics::render_field() {
 					SDL_Rect enemy = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
 					SDL_RenderDrawRect(renderer_, &enemy);
 				} break;
-				case '@': {
+				case game_level::PLAYER: {
 					SDL_SetRenderDrawColor(renderer_, 30, 100, 180, 255);
 					SDL_RenderDrawRect(renderer_, &cell);
 					SDL_SetRenderDrawColor(renderer_, 30, 100, 180, 255);
@@ -121,7 +121,7 @@ void Graphics::render_field() {
 					SDL_Rect player = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
 					SDL_RenderDrawRect(renderer_, &player);
 				} break;
-				case 'C': {
+				case game_level::CHEST: {
 					SDL_SetRenderDrawColor(renderer_, 160, 65, 160, 255);
 					SDL_RenderDrawRect(renderer_, &cell);
 					SDL_SetRenderDrawColor(renderer_, 160, 65, 160, 255);
@@ -129,7 +129,7 @@ void Graphics::render_field() {
 					SDL_Rect player = {cell.x + size / 4, cell.y + size / 4, size / 2, size / 2};
 					SDL_RenderDrawRect(renderer_, &player);
 				} break;
-				case 'S': case 'D': {
+				case game_level::EXIT: {
 					SDL_SetRenderDrawColor(renderer_, 240, 210, 10, 255);
 					SDL_RenderDrawRect(renderer_, &cell);
 					SDL_SetRenderDrawColor(renderer_, 240, 210, 10, 255);
