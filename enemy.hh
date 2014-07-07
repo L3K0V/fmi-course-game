@@ -46,6 +46,8 @@ class Enemy {
         
         void set_x(int x) { x_ = x; }
         void set_y(int y) { y_ = y; }
+		
+		int take_damage(int dmg);
 };
 
 #endif //__ENEMY_H__

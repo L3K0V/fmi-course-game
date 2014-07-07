@@ -5,7 +5,7 @@
 
 #include <cstring>
 
-const float Player::BASE_MISS		= 1.f;
+const float Player::BASE_MISS		= 2.f;
 const float Player::BASE_DODGE		= 10.f;
 const float Player::ALC_PERCENTAGE	= 15.f / 100.f;
 const float Player::DOG_PERCENTAGE	= 20.f / 100.f;
@@ -206,11 +206,15 @@ int Player::take_damage(int dmg) {
 	bool dodge = game_utilities::random(0, 100) <= get_dodge_chance();
 	if (!dodge) {
 		dmg -= (0.50 * get_armor());
-		dmg = dmg < 0 ? -dmg : dmg;
 		hp_ -= dmg;
 	}
+	return hp_;
 }
 
 int Player::deal_damage() {
-	return 1; //TODO:
+	bool miss = game_utilities::random(0, 100) < get_miss_chance();
+	if(!miss) {
+		return get_dmg() + get_critical();
+	}
+	return 0;
 }

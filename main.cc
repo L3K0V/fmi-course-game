@@ -9,8 +9,8 @@ using namespace std;
 
 int main() {
     Player kamunn("Kamunn");
-	kamunn.use_inventory_item(kamunn.add_to_inventory(new Armor('C', "C#hest", 50)));
-	kamunn.use_inventory_item(kamunn.add_to_inventory(new Weapon('T', "Might Java Sword", 25, 35)));
+	kamunn.use_inventory_item(kamunn.add_to_inventory(new Armor('C', "C#hest", 15)));
+	kamunn.use_inventory_item(kamunn.add_to_inventory(new Weapon('T', "Mighty Java Sword", 20, 10)));
 
     Game* game = new Game();
     game->load();

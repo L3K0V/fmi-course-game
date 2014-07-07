@@ -83,17 +83,25 @@ int Game::move(Position pos) {
 int Game::fight() {
 	Enemy enemy = get_enemy(player_->get_x(), player_->get_y());
 	
-	player_->take_damage(enemy.get_dmg());
 	
-	return 1;
+	std::cout << "Fight between: player and " << enemy.get_name() << " started!" << endl; 
 	
-	/* while(player_->get_hp() > 0 || enemy.get_hp()) {
-		if (game_utilities::random(0, 2) == 1) {
-			player_->take_damage(enemy.get_dmg()); //FIXME: floating point exception
+	
+	while(player_->get_hp() > 0 || enemy.get_hp() > 0) {
+		if (game_utilities::random(0, 2) != 1) {
+			player_->take_damage(enemy.get_dmg());
 		} else {
-			
+			enemy.take_damage(player_->deal_damage());
 		}
-	} */
+		std::cout << "Player: " << player_->get_hp() << ", " << enemy.get_name() << " " << enemy.get_hp() << std::endl;
+		
+		if (player_->get_hp() <= 0) {
+			flag_quit = true;
+			return 0;
+		} else if (enemy.get_hp() <= 0) {
+			return 1;
+		}
+	}
 }
 
 Enemy& Game::get_enemy(int x, int y) {
